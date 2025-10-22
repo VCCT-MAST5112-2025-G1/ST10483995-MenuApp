@@ -1,0 +1,157 @@
+import { StyleSheet } from 'react-native';
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    contentContainer: {
+        paddingBottom: 40,
+    },
+    header: {
+        backgroundColor: '#ACD8AC',
+        paddingVertical: 20,
+        paddingHorizontal: 15,
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    headerText: {
+        fontSize: 30,
+        fontFamily: 'Italiana',
+        color: '#323131ff',
+        fontWeight: '300',
+    },
+    sectionTitle: {
+        fontSize: 22,
+        fontWeight: '300',
+        color: '#333',
+        marginLeft: 15,
+        marginTop: 20,
+        marginBottom: 10,
+    },
+    menuBox: {
+        backgroundColor: '#f9f9f9',
+        marginHorizontal: 15,
+        padding: 25,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 8,
+    },
+    menuItem: {
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    menuItemTitle: {
+        fontWeight: '600',
+        fontSize: 20,
+        marginTop: 5,
+        color: '#555',
+    },
+    menuItemDetails: {
+        fontSize: 16,
+        color: '#777',
+    },
+    menuOptionsGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        paddingHorizontal: 10,
+    },
+    menuOptionContainer: {
+        width: '45%',
+        margin: 10,
+        alignItems: 'center',
+    },
+    imageBorder: {
+        width: 130,
+        height: 130,
+        borderRadius: 65,
+        padding: 3,
+        backgroundColor: '#9370DB',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 5,
+        overflow: 'hidden',
+    },
+    menuImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 65,
+        borderWidth: 1,
+        borderColor: '#fff',
+        backgroundColor: '#ccc'
+    },
+    menuOptionLabel: {
+        fontFamily: 'Italiana',
+        fontSize: 18,
+        marginTop: 8,
+        color: '#333',
+    },
+    editButton: {
+        backgroundColor: '#6750A4',
+        paddingVertical: 12,
+        marginHorizontal: 100,
+        borderRadius: 25,
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    editButtonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: '500',
+    },
+    priceBox: {
+        backgroundColor: '#f9f9f9',
+        marginHorizontal: 15,
+        padding: 20,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 8,
+        marginBottom: 30,
+    },
+    priceText: {
+        fontSize: 18,
+        color: '#555',
+        marginBottom: 8,
+    },
+    image: {
+        width: 64,
+        height: 64,
+        marginBottom: 8,
+    },
+    label: {
+        fontSize: 16,
+        textAlign: 'center',
+    },
+    InputBoxes: {
+        height: 50,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        marginVertical: 8,
+        fontSize: 16,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: '500',
+    },
+});
+
+export default styles;
