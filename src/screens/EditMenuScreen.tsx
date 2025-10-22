@@ -1,100 +1,111 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, SafeAreaView, FlatList } from "react-native";
 import  styles  from '../Styles/styles';
 import { AppDataContext } from "../../Data";
+import { useNavigation } from "@react-navigation/native";
 
 
-type MenuItem = {
+type Dish = {
     name: string;
     details: string;
-    price: number;
+    price: string;
 };
 
-export default function EditMenuScreen() {
+type Props = {
+    title: string;
+}
+
+export default function EditMenuScreen( {title}: Props ) {
+    const navigation = useNavigation();
+    navigation.goBack();
+
     const { dish, setDishes } = useContext(AppDataContext) as any;
 
-    const [mealName, setMealName] = useState<string>('');
-    const [mealType, setMealType] = useState<string>('');
-    const [mealDetails, setMealDetails] = useState<string>('');
-    const [mealPrice, setMealPrice] = useState<number>(0);
+    const [dishName, setMealName] = useState('');
+    const [dishDetails, setDishDetails] = useState('');
+    const [dishPrice, setPrice] = useState('');
+    const [category, setCategory] = useState('');
 
-    const resetForm = () => {
-        setMealName('');
-        setMealType('');
-        setMealDetails('');
-        setMealPrice(0);
-    };
+    const [menu, setMenu] = useState({
+        Starters: [] as Dish[],
+        Main: [] as Dish[],
+        Desserts: [] as Dish[],
+        Specials: [] as Dish[],
+    });
 
-    const handleEditMenu = () => {
-        const name = mealName.trim();
-        const type = mealType.trim();
-        const details = mealDetails.trim();
-        const price = mealPrice;
-
-        if (!name || !type || !details || price <= 0) {
-            alert('Please fill in all fields with valid information (price must be > 0).');
+    const handleDishEdit = () => {
+        if (!dishName.trim() || !dishDetails.trim() || !dishPrice.trim()) 
             return;
-        }
 
-        const newMeal: MenuItem = {
-            name,
-            details,
-            price,
+        const updatedDish = {
+            name: dishName,
+            details: dishDetails,
+            price: dishPrice,
         };
+        setDishes((prev:any) => [...prev, updatedDish]);
 
-        setDishes((prevDishes: any) => {
-            const list: MenuItem[] = (prevDishes && prevDishes[type]) ? prevDishes[type] : [];
-
-            const exists = list.some((item) => item.name === name);
-            const updatedList = exists
-                ? list.map((item) => (item.name === name ? newMeal : item))
-                : [...list, newMeal];
-
-            return {
-                ...prevDishes,
-                [type]: updatedList,
-            };
-        });
-
-        resetForm();
+        //Clear inputs
+        setMealName('');
+        setDishDetails('');
+        setPrice('');
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View>
-                <TextInput
-                    style={styles.InputBoxes}
-                    placeholder="Meal Name"
-                    value={mealName}
-                    onChangeText={setMealName}
-                />
+        <View style={styles.container}>
+            <Text style={styles.headerText}>{title} Menu</Text>
 
-                <TextInput
-                    style={styles.InputBoxes}
-                    placeholder="Meal Type (e.g., Starter, Main, Dessert)"
-                    value={mealType}
-                    onChangeText={setMealType}
-                />
-
-                <TextInput
-                    style={styles.InputBoxes}
-                    placeholder="Meal Details"
-                    value={mealDetails}
-                    onChangeText={setMealDetails}
-                />
-
-                <TextInput
-                    style={styles.InputBoxes}
-                    placeholder="Meal Price"
-                    value={mealPrice === 0 ? '' : mealPrice.toString()}
-                    onChangeText={text => setMealPrice(parseFloat(text) || 0)}
-                    keyboardType="numeric"
-                />
-
-                <TouchableOpacity style={styles.editButton} onPress={handleEditMenu}>
-                    <Text style={styles.buttonText}>Update</Text>
-                </TouchableOpacity>
+            <View style={styles.categoryRow}>
+                {['Starters', 'Main', 'Desserts', 'Specials'].map((cat) => (
+                    <TouchableOpacity
+                        key={cat}
+                        style={[styles.editButton, cat === category && styles.categorySelected]}
+                        onPress={() => setCategory(cat)}
+                        activeOpacity={0.8}
+                    >
+                        <Text style={styles.categoryButtonText}>{cat}</Text>
+                    </TouchableOpacity>
+                ))}
             </View>
-        </SafeAreaView>
+
+            <TextInput
+                style={styles.InputBoxes}
+                placeholder="Dish Name"
+                value={dishName}
+                onChangeText={setMealName}
+            /> 
+            <TextInput
+                style={styles.InputBoxes}
+                placeholder="Dish Details"
+                value={dishDetails}
+                onChangeText={setDishDetails}
+            />
+            <TextInput
+                style={styles.InputBoxes}
+                placeholder="Dish Price"
+                value={dishPrice}
+                onChangeText={setPrice}
+                keyboardType="numeric"
+            />
+
+            <TouchableOpacity style={styles.editButton} onPress={handleDishEdit}>
+                <Text style={styles.buttonText}>Update Dish</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.editButton} onPress={() => navigation.goBack()}>
+                    <Text style={styles.buttonText}>Back</Text>
+                </TouchableOpacity>
+
+            <FlatList
+                data={dish}
+                keyExtractor={(_, index: number) => index.toString()}
+                renderItem={({ item }: { item: any }) => (
+                    <View style={styles.priceBox}>
+                        <Text style={styles.priceText}>Name: {item.name}</Text>
+                        <Text style={styles.priceText}>Details: {item.details}</Text>
+                        <Text style={styles.priceText}>Price: {item.price}</Text>
+                    </View>
+                )}
+            />
+        </View>
     );
 }

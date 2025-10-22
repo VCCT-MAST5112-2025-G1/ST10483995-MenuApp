@@ -152,6 +152,30 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
     },
+    categoryRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginVertical: 10,
+    },
+    categoryButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    categorySelected: {
+        backgroundColor: '#4B0082',
+    },
+    sectionSubText: {
+        fontSize: 16,
+        color: '#666',
+        marginBottom: 10,
+    },
+    categoryButton: {
+        backgroundColor: '#9370DB',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 20,
+    },
 });
 
 export default styles;
