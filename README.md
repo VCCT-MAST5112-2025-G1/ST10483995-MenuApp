@@ -42,14 +42,14 @@ git clone https://github.com/yourusername/menu-app.git
 cd menu-app
 npm install
 
-# Rnn the App
+# Run the App
 
 npx expo start
 
 ## Links
 
-# Personal GitHub: (https://github.com/ST10483995)
+# [Personal GitHub:] (https://github.com/ST10483995)
 
-# YouTube: (https://youtube.com/shorts/AES_7y8YWsQ?feature=share)
+# [YouTube:] (https://youtube.com/shorts/AES_7y8YWsQ?feature=share)
 
 
