@@ -77,17 +77,27 @@ export default function EditMenuScreen() {
     <View style={styles.container}>
       <Text style={styles.headerText}>Menu</Text>
 
-      <View style={styles.categoryRow}>
-        {CATEGORIES.map((cat) => (
-          <TouchableOpacity
-            key={cat}
-            style={[styles.editButton, cat === category && styles.categorySelected]}
-            onPress={() => setCategory(cat)}
-            activeOpacity={0.8}
+      <View style={{ marginVertical: 12 }}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingHorizontal: 8 }}
           >
-            <Text style={styles.categoryButtonText}>{cat}</Text>
-          </TouchableOpacity>
-        ))}
+            {CATEGORIES.map((cat) => (
+              <TouchableOpacity
+                key={cat}
+                style={[
+                  styles.editButton,
+                  cat === category && styles.categorySelected,
+                  { marginRight: 8 },
+                ]}
+                onPress={() => setCategory(cat)}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.categoryButtonText}>{cat}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
     </View>
 

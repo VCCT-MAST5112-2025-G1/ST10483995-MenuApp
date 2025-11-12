@@ -61,6 +61,15 @@ const contextSetDishes: ((d: Dish[] | ((prev: Dish[]) => Dish[])) => void) | und
 // local copy of dishes — kept in sync with context if present
 const [dishes, setDishesLocal] = useState<Dish[]>(contextDishes ?? []);
 
+const getAveragePriceByCategory = (category: string) => {
+  const filtered = dishes.filter((d) => d.category === category);
+  if (filtered.length === 0) return 0;
+
+  const total = filtered.reduce((sum, d) => sum + parseFloat(d.price || "0"), 0);
+  return total / filtered.length;
+};
+
+
 useEffect(() => {
   if (contextDishes) setDishesLocal(contextDishes);
 }, [contextDishes]);
@@ -157,11 +166,16 @@ const newList = [...dishes, updatedDish];
         <Text style={styles.sectionTitle}>Average Prices</Text>
 
         <View style={styles.priceBox}>
-          <Text style={styles.priceText}>Starters: R90.00</Text>
-          <Text style={styles.priceText}>Main: R125.00</Text>
-          <Text style={styles.priceText}>Desserts: R50.00</Text>
-          <Text style={styles.priceText}>Specials: R150.00</Text>
-        </View>
+          {["Starters", "Main", "Desserts", "Specials"].map((cat) => {
+            const avg = getAveragePriceByCategory(cat);
+            return (
+             <Text key={cat} style={styles.priceText}>
+               {cat}: {avg > 0 ? `R${avg.toFixed(2)}` : "No dishes"}
+             </Text>
+            );
+  })}
+</View>
+
       </ScrollView>
     </SafeAreaView>
   );
