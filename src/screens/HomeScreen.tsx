@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
   ImageSourcePropType,
   SafeAreaView,
-  TextInput,
-  FlatList,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import styles from '../Styles/styles';
@@ -21,12 +19,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();
-  navigation.goToEditMenu = () => {
-    navigation.navigate("EditMenu");
 
-  navigation.goToMenuView = () => {
+  const goToEditMenu = () => {
+    navigation.navigate("EditMenu")
+  };
+
+  const goToMenuView = () => {
     navigation.navigate("MenuView");
-  }
+  };
+
 
 type MenuOptionProps = {
   label: string;
@@ -52,42 +53,42 @@ type Dish = {
 
 const CATEGORIES = ['Starters', 'Main', 'Desserts', 'Specials'];
 
-const HomeScreen: React.FC = () => {
-  const ctx = useContext(AppDataContext) as any;
-  const contextDishes: Dish[] | undefined = ctx?.dish;
-  const contextSetDishes: ((d: Dish[] | ((prev: Dish[]) => Dish[])) => void) | undefined = ctx?.setDishes;
 
-  // local copy of dishes — kept in sync with context if present
-  const [dishes, setDishesLocal] = useState<Dish[]>(contextDishes ?? []);
+const ctx = useContext(AppDataContext) as any;
+const contextDishes: Dish[] | undefined = ctx?.dish;
+const contextSetDishes: ((d: Dish[] | ((prev: Dish[]) => Dish[])) => void) | undefined = ctx?.setDishes;
 
-  useEffect(() => {
-    if (contextDishes) setDishesLocal(contextDishes);
-  }, [contextDishes]);
+// local copy of dishes — kept in sync with context if present
+const [dishes, setDishesLocal] = useState<Dish[]>(contextDishes ?? []);
 
-  const [category, setCategory] = useState<string>('Starters');
+useEffect(() => {
+  if (contextDishes) setDishesLocal(contextDishes);
+}, [contextDishes]);
 
-  const [dishName, setDishName] = useState('');
-  const [dishDetails, setDishDetails] = useState('');
-  const [dishPrice, setDishPrice] = useState('');
+const [category, setCategory] = useState<string>('Starters');
 
-  const handleAddOrUpdate = () => {
-    if (!dishName.trim() || !dishDetails.trim() || !dishPrice.trim()) return;
+const [dishName, setDishName] = useState('');
+const [dishDetails, setDishDetails] = useState('');
+const [dishPrice, setDishPrice] = useState('');
 
-    const updatedDish: Dish = {
-      name: dishName.trim(),
-      details: dishDetails.trim(),
-      price: dishPrice.trim(),
-      category,
-    };
+const handleAddOrUpdate = () => {
+  if (!dishName.trim() || !dishDetails.trim() || !dishPrice.trim()) return;
 
-    const newList = [...dishes, updatedDish];
-    // update local state
-    setDishesLocal(newList);
+  const updatedDish: Dish = {
+    name: dishName.trim(),
+    details: dishDetails.trim(),
+    price: dishPrice.trim(),
+    category,
+  };
 
-    // if context setter exists, update context as well
-    if (typeof contextSetDishes === 'function') {
-      // prefer functional update to avoid race conditions
-      try {
+const newList = [...dishes, updatedDish];
+// update local state
+  setDishesLocal(newList);
+
+// if context setter exists, update context as well
+  if (typeof contextSetDishes === 'function') {
+  // prefer functional update to avoid race conditions
+  try {
         contextSetDishes((prev: any) => {
           if (Array.isArray(prev)) return [...prev, updatedDish];
           return [...(prev ?? []), updatedDish];
@@ -140,14 +141,14 @@ const HomeScreen: React.FC = () => {
         <Text style={styles.sectionTitle}>Menu Options</Text>
 
         <View style={styles.menuOptionsGrid}>
-          <MenuOption label="Starters" imageSource={{ uri: 'https://picsum.photos/seed/starters/400/400' }} onPress={navigation.goToMenuView} />
-          <MenuOption label="Main" imageSource={{ uri: 'https://picsum.photos/seed/main/400/400' }} onPress={navigation.goToMenuView} />
-          <MenuOption label="Desserts" imageSource={{ uri: 'https://picsum.photos/seed/dessert/400/400' }} onPress={navigation.goToMenuView} />
-          <MenuOption label="Specials" imageSource={{ uri: 'https://picsum.photos/seed/specials/400/400' }} onPress={navigation.goToMenuView} />
+          <MenuOption label="Starters" imageSource={{ uri: 'https://picsum.photos/seed/starters/400/400' }} onPress={goToMenuView} />
+          <MenuOption label="Main" imageSource={{ uri: 'https://picsum.photos/seed/main/400/400' }} onPress={goToMenuView} />
+          <MenuOption label="Desserts" imageSource={{ uri: 'https://picsum.photos/seed/dessert/400/400' }} onPress={goToMenuView} />
+          <MenuOption label="Specials" imageSource={{ uri: 'https://picsum.photos/seed/specials/400/400' }} onPress={goToMenuView} />
         </View>
 
         <TouchableOpacity style={styles.editButton}
-          onPress={navigation.goToEditMenu}
+          onPress={goToEditMenu}
           activeOpacity={0.8}
         >
           <Text style={styles.editButtonText}>Edit Menu</Text>
@@ -164,4 +165,4 @@ const HomeScreen: React.FC = () => {
       </ScrollView>
     </SafeAreaView>
   );
-}}}
+}
