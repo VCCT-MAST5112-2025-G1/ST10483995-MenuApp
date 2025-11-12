@@ -3,19 +3,34 @@ import { View, Text, TouchableOpacity, TextInput, SafeAreaView, FlatList } from 
 import  styles  from '../Styles/styles';
 import { AppDataContext } from "../../Data";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/AppNavigator";
 
+type Props = NativeStackScreenProps<RootStackParamList, 'EditMenu'>
 
 type Dish = {
     name: string;
     details: string;
     price: string;
+    category: string;
 };
 
-type Props = {
-    title: string;
-}
+const CATEGORIES = ['Starters', 'Main', 'Desserts', 'Specials']
 
-export default function EditMenuScreen( {title}: Props ) {
+const ctx = useContext(AppDataContext) as any;
+  const contextDishes: Dish[] | undefined = ctx?.dish;
+  const contextSetDishes: ((d: Dish[] | ((prev: Dish[]) => Dish[])) => void) | undefined = ctx?.setDishes;
+
+  // local copy of dishes — kept in sync with context if present
+  const [dishes, setDishesLocal] = useState<Dish[]>(contextDishes ?? []);
+
+  useEffect(() => {
+    if (contextDishes) setDishesLocal(contextDishes);
+  }, [contextDishes]);
+
+
+export default function EditMenuScreen() {
     const navigation = useNavigation();
     navigation.goBack();
 
@@ -26,6 +41,8 @@ export default function EditMenuScreen( {title}: Props ) {
     const [dishPrice, setPrice] = useState('');
     const [category, setCategory] = useState('');
 
+    const [editing, setEditing] = useState(false);
+
     const [menu, setMenu] = useState({
         Starters: [] as Dish[],
         Main: [] as Dish[],
@@ -34,15 +51,32 @@ export default function EditMenuScreen( {title}: Props ) {
     });
 
     const handleDishEdit = () => {
-        if (!dishName.trim() || !dishDetails.trim() || !dishPrice.trim()) 
+        if (!category.trim() || !dishName.trim() || !dishDetails.trim() || !dishPrice.trim()) 
             return;
 
         const updatedDish = {
+            category: category,
             name: dishName,
             details: dishDetails,
             price: dishPrice,
         };
         setDishes((prev:any) => [...prev, updatedDish]);
+
+        const newList = [...dish, updatedDish];
+    // update local state
+    setDishesLocal(newList);
+
+    // if context setter exists, update context as well
+    if (typeof contextSetDishes === 'function') {
+      // prefer functional update to avoid race conditions
+      try {
+        contextSetDishes((prev: any) => {
+          if (Array.isArray(prev)) return [...prev, updatedDish];
+          return [...(prev ?? []), updatedDish];
+        });
+      } catch {
+        // fallback: call with full array
+        contextSetDishes(newList as any);
 
         //Clear inputs
         setMealName('');
@@ -52,7 +86,7 @@ export default function EditMenuScreen( {title}: Props ) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.headerText}>{title} Menu</Text>
+            <Text style={styles.headerText}> Menu</Text>
 
             <View style={styles.categoryRow}>
                 {['Starters', 'Main', 'Desserts', 'Specials'].map((cat) => (
@@ -108,4 +142,4 @@ export default function EditMenuScreen( {title}: Props ) {
             />
         </View>
     );
-}
+}}}

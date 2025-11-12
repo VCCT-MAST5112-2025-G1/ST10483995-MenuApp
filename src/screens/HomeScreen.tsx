@@ -13,6 +13,20 @@ import {
 import { StatusBar } from "expo-status-bar";
 import styles from '../Styles/styles';
 import { AppDataContext } from "../../Data";
+import { useNavigation } from "@react-navigation/native"
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/AppNavigator";
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export default function HomeScreen() {
+  const navigation = useNavigation<any>();
+  navigation.goToEditMenu = () => {
+    navigation.navigate("EditMenu");
+
+  navigation.goToMenuView = () => {
+    navigation.navigate("MenuView");
+  }
 
 type MenuOptionProps = {
   label: string;
@@ -50,7 +64,6 @@ const HomeScreen: React.FC = () => {
     if (contextDishes) setDishesLocal(contextDishes);
   }, [contextDishes]);
 
-  const [editing, setEditing] = useState(false);
   const [category, setCategory] = useState<string>('Starters');
 
   const [dishName, setDishName] = useState('');
@@ -88,7 +101,6 @@ const HomeScreen: React.FC = () => {
     setDishName('');
     setDishDetails('');
     setDishPrice('');
-    setEditing(false);
   };
 
   // helper: dishes by category
@@ -100,7 +112,6 @@ const HomeScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Christoffel Cuisine</Text>
-          {/* removed counter from the header per request */}
         </View>
 
         <Text style={styles.sectionTitle}>Tonight's Menu</Text>
@@ -129,58 +140,18 @@ const HomeScreen: React.FC = () => {
         <Text style={styles.sectionTitle}>Menu Options</Text>
 
         <View style={styles.menuOptionsGrid}>
-          <MenuOption label="Starters" imageSource={{ uri: 'https://picsum.photos/seed/starters/400/400' }} onPress={() => setCategory('Starters')} />
-          <MenuOption label="Main" imageSource={{ uri: 'https://picsum.photos/seed/main/400/400' }} onPress={() => setCategory('Main')} />
-          <MenuOption label="Desserts" imageSource={{ uri: 'https://picsum.photos/seed/dessert/400/400' }} onPress={() => setCategory('Desserts')} />
-          <MenuOption label="Specials" imageSource={{ uri: 'https://picsum.photos/seed/specials/400/400' }} onPress={() => setCategory('Specials')} />
+          <MenuOption label="Starters" imageSource={{ uri: 'https://picsum.photos/seed/starters/400/400' }} onPress={navigation.goToMenuView} />
+          <MenuOption label="Main" imageSource={{ uri: 'https://picsum.photos/seed/main/400/400' }} onPress={navigation.goToMenuView} />
+          <MenuOption label="Desserts" imageSource={{ uri: 'https://picsum.photos/seed/dessert/400/400' }} onPress={navigation.goToMenuView} />
+          <MenuOption label="Specials" imageSource={{ uri: 'https://picsum.photos/seed/specials/400/400' }} onPress={navigation.goToMenuView} />
         </View>
 
-        <TouchableOpacity style={styles.editButton} onPress={() => setEditing(prev => !prev)}>
-          <Text style={styles.editButtonText}>{editing ? 'Close Editor' : `Edit Menu (${category})`}</Text>
+        <TouchableOpacity style={styles.editButton}
+          onPress={navigation.goToEditMenu}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.editButtonText}>Edit Menu</Text>
         </TouchableOpacity>
-
-        {editing && (
-          <View style={styles.menuBox}>
-            <Text style={styles.sectionTitle}>Edit Menu</Text>
-
-            {/* restored category buttons to use the editButton style (no new dropdown-style changes) */}
-            <View style={styles.categoryRow}>
-              {CATEGORIES.map(cat => (
-                <TouchableOpacity
-                  key={cat}
-                  style={[styles.editButton, cat === category && styles.categorySelected]}
-                  onPress={() => setCategory(cat)}
-                >
-                  <Text style={styles.editButtonText}>{cat}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TextInput
-              style={styles.InputBoxes}
-              placeholder="Dish Name"
-              value={dishName}
-              onChangeText={setDishName}
-            />
-            <TextInput
-              style={styles.InputBoxes}
-              placeholder="Dish Details"
-              value={dishDetails}
-              onChangeText={setDishDetails}
-            />
-            <TextInput
-              style={styles.InputBoxes}
-              placeholder="Dish Price"
-              value={dishPrice}
-              onChangeText={setDishPrice}
-              keyboardType="numeric"
-            />
-
-            <TouchableOpacity style={styles.editButton} onPress={handleAddOrUpdate}>
-              <Text style={styles.editButtonText}>Save Dish</Text>
-            </TouchableOpacity>
-          </View>
-        )}
 
         <Text style={styles.sectionTitle}>Average Prices</Text>
 
@@ -190,30 +161,7 @@ const HomeScreen: React.FC = () => {
           <Text style={styles.priceText}>Desserts: R50.00</Text>
           <Text style={styles.priceText}>Specials: R150.00</Text>
         </View>
-
-        <Text style={styles.sectionTitle}>Current Dishes</Text>
-
-        <FlatList
-          data={dishes}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.priceBox}>
-              <Text style={styles.priceText}>Name: {item.name}</Text>
-              <Text style={styles.priceText}>Category: {item.category}</Text>
-              <Text style={styles.priceText}>Details: {item.details}</Text>
-              <Text style={styles.priceText}>Price: {item.price}</Text>
-            </View>
-          )}
-          ListEmptyComponent={<Text style={{ textAlign: 'center', marginVertical: 12 }}>No dishes yet</Text>}
-        />
-
-        {/* counter moved to bottom of the page */}
-        <View style={{ marginVertical: 12, alignItems: 'center' }}>
-          <Text style={styles.sectionSubText}>{dishes.length} dishes</Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
-};
-
-export default HomeScreen;
+}}}
