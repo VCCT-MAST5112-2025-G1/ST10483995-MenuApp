@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, TouchableOpacity, TextInput, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, SafeAreaView, StatusBar } from "react-native";
 import styles from "../Styles/styles";
 import { AppDataContext } from "../../Data";
 import { useNavigation } from "@react-navigation/native";
@@ -69,6 +69,11 @@ export default function EditMenuScreen() {
   };
 
   return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Christoffel Cuisine</Text>
+        </View>
     <View style={styles.container}>
       <Text style={styles.headerText}>Menu</Text>
 
@@ -83,7 +88,8 @@ export default function EditMenuScreen() {
             <Text style={styles.categoryButtonText}>{cat}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+        </View>
+    </View>
 
       <TextInput
         style={styles.InputBoxes}
@@ -113,17 +119,7 @@ export default function EditMenuScreen() {
         <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
 
-      <FlatList
-        data={dishes}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.priceBox}>
-            <Text style={styles.priceText}>Name: {item.name}</Text>
-            <Text style={styles.priceText}>Details: {item.details}</Text>
-            <Text style={styles.priceText}>Price: {item.price}</Text>
-          </View>
-        )}
-      />
-    </View>
+    </ScrollView>
+    </SafeAreaView>
   );
 }
