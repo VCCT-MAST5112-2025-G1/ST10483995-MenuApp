@@ -51,7 +51,7 @@ npx expo start
 # [Personal GitHub:] (https://github.com/ST10483995)
 
 # Part 2 [YouTube:] (https://youtube.com/shorts/AES_7y8YWsQ?feature=share)
-# Part 2 [YouTube] (https://youtu.be/4_HOIqCdoqU)
+# Part 3 [YouTube] (https://youtu.be/4_HOIqCdoqU)
 
 # Changelog
 - First made sure that the errors from part 2 were solved
