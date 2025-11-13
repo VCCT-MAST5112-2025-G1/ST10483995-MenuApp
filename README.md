@@ -50,6 +50,15 @@ npx expo start
 
 # [Personal GitHub:] (https://github.com/ST10483995)
 
-# [YouTube:] (https://youtube.com/shorts/AES_7y8YWsQ?feature=share)
+# Part 2 [YouTube:] (https://youtube.com/shorts/AES_7y8YWsQ?feature=share)
+# Part 2 [YouTube] (https://youtu.be/4_HOIqCdoqU)
 
+# Changelog
+- First made sure that the errors from part 2 were solved
+- Coded for the navigation so that it would work across all the screens
+- Adjusting the work and coding that was done in Part 2 by moving and compromising some code to the other screens
+- Made sure that the dishes were inputted into the arrays before moving on
+- Edited the Data.tsx file to adjust to the added code with correspondence to the changes made with the arrays
+- Started coding for the average prices to be dependent on the dishes added in the edit screen and shown on the view page
+- Adjusting the code in specific parts to make the the ScrollView for the categories to be horizontal instead of vertical like the rest of the screens
 
